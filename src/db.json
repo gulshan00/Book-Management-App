@@ -1,0 +1,124 @@
+{
+  "books": [
+    {
+      "id": "6",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "genre": "Classic",
+      "publishedYear": 1925,
+      "status": "Available"
+    },
+    {
+      "id": "9",
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "genre": "Fantasy",
+      "publishedYear": 1937,
+      "status": "Available"
+    },
+    {
+      "id": "10",
+      "title": "Harry Potter and the Sorcerer's Stone",
+      "author": "J.K. Rowling",
+      "genre": "Fantasy",
+      "publishedYear": 1997,
+      "status": "Available"
+    },
+    {
+      "id": "11",
+      "title": "The Fellowship of the Ring",
+      "author": "J.R.R. Tolkien",
+      "genre": "Fantasy",
+      "publishedYear": 1954,
+      "status": "Issued"
+    },
+    {
+      "id": "12",
+      "title": "The Lean Startup",
+      "author": "Eric Ries",
+      "genre": "Business",
+      "publishedYear": 2011,
+      "status": "Available"
+    },
+    {
+      "id": "13",
+      "title": "Rich Dad Poor Dad",
+      "author": "Robert T. Kiyosaki",
+      "genre": "Finance",
+      "publishedYear": 1997,
+      "status": "Available"
+    },
+    {
+      "id": "14",
+      "title": "The Power of Now",
+      "author": "Eckhart Tolle",
+      "genre": "Spirituality",
+      "publishedYear": 1997,
+      "status": "Issued"
+    },
+    {
+      "id": "16",
+      "title": "Sapiens: A Brief History of Humankind",
+      "author": "Yuval Noah Harari",
+      "genre": "History",
+      "publishedYear": 2011,
+      "status": "Issued"
+    },
+    {
+      "id": "17",
+      "title": "Educated",
+      "author": "Tara Westover",
+      "genre": "Memoir",
+      "publishedYear": 2018,
+      "status": "Available"
+    },
+    {
+      "id": "18",
+      "title": "Becoming",
+      "author": "Michelle Obama",
+      "genre": "Memoir",
+      "publishedYear": 2018,
+      "status": "Available"
+    },
+    {
+      "id": "19",
+      "title": "The Pragmatic Programmer",
+      "author": "Andrew Hunt & David Thomas",
+      "genre": "Programming",
+      "publishedYear": 1999,
+      "status": "Available"
+    },
+    {
+      "id": "20",
+      "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+      "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+      "genre": "Programming",
+      "publishedYear": 1994,
+      "status": "Issued"
+    },
+    {
+      "id": "21",
+      "title": "Don Quixote",
+      "author": "Miguel de Cervantes",
+      "genre": "Classic",
+      "publishedYear": 1605,
+      "status": "Available"
+    },
+    {
+      "id": "fb51",
+      "title": "drjnjdf",
+      "author": "adf",
+      "genre": "adf",
+      "publishedYear": 2025,
+      "status": "Issued"
+    },
+    {
+      "id": "ba17",
+      "title": "545",
+      "author": "42",
+      "genre": "j",
+      "publishedYear": 2025,
+      "status": "Available"
+    }
+  ]
+}
