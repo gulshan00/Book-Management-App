@@ -1,14 +1,6 @@
 {
   "books": [
     {
-      "id": "6",
-      "title": "The Great Gatsby",
-      "author": "F. Scott Fitzgerald",
-      "genre": "Classic",
-      "publishedYear": 1925,
-      "status": "Available"
-    },
-    {
       "id": "9",
       "title": "The Hobbit",
       "author": "J.R.R. Tolkien",
@@ -54,14 +46,6 @@
       "author": "Eckhart Tolle",
       "genre": "Spirituality",
       "publishedYear": 1997,
-      "status": "Issued"
-    },
-    {
-      "id": "16",
-      "title": "Sapiens: A Brief History of Humankind",
-      "author": "Yuval Noah Harari",
-      "genre": "History",
-      "publishedYear": 2011,
       "status": "Issued"
     },
     {
