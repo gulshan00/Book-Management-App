@@ -38,10 +38,10 @@ export default function DashboardLayout() {
 
   // Navigation items
   const navigationItems = [
-    { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { path: "/books", icon: Book, label: "Books" },
-    { path: "/authors", icon: Users, label: "Authors" },
-    { path: "/settings", icon: Settings, label: "Settings" },
+    { path: "/", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/", icon: Book, label: "Books" },
+    { path: "/", icon: Users, label: "Authors" },
+    { path: "/", icon: Settings, label: "Settings" },
   ];
 
   const isActiveRoute = (path: string) => location.pathname === path || (path === "/dashboard" && location.pathname === "/");
