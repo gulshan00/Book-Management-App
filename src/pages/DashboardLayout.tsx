@@ -61,7 +61,7 @@ export default function DashboardLayout() {
     { path: "/", icon: LayoutDashboard, label: "Dashboard", color: "from-emerald-500 to-teal-600" },
     { path: "/books", icon: BookOpen, label: "Books", color: "from-violet-500 to-purple-600" },
     { path: "/message", icon: Users, label: "Message", color: "from-orange-500 to-red-500" },
-    { path: "/profile", icon: UserCircle, label: "Profile", color: "from-orange-500 to-red-500" },
+    // { path: "/profile", icon: UserCircle, label: "Profile", color: "from-orange-500 to-red-500" },
     { path: "/setting", icon: Settings, label: "Setting", color: "from-slate-500 to-gray-600" },
   ];
 
