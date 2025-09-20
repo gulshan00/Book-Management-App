@@ -2,8 +2,9 @@ import { BrowserRouter, Routes, Route, } from "react-router-dom";
 import DashboardLayout from "./pages/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
-import Authors from "./pages/Authors";
+import Message from "./pages/Message";
 import Setting from "./pages/Setting";
+import Profile from "./pages/profile";
 
 
 export default function App() {
@@ -13,7 +14,8 @@ export default function App() {
         <Route path="/" element={<DashboardLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/books" element={<Books />} />
-          <Route path="/authors" element={<Authors />} />
+          <Route path="/message" element={<Message />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/setting" element={<Setting />} />
         </Route>
       </Routes>

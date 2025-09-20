@@ -1,84 +1,236 @@
 {
   "books": [
     {
+      "id": "2",
+      "title": "Midnight’s Children",
+      "author": "Salman Rushdie",
+      "genre": "Historical Fiction",
+      "publishedYear": 1981,
+      "status": "Issued"
+    },
+    {
+      "id": "3",
+      "title": "Train to Pakistan",
+      "author": "Khushwant Singh",
+      "genre": "Historical Fiction",
+      "publishedYear": 1956,
+      "status": "Available"
+    },
+    {
+      "id": "5",
+      "title": "The White Tiger",
+      "author": "Aravind Adiga",
+      "genre": "Fiction",
+      "publishedYear": 2008,
+      "status": "Available"
+    },
+    {
+      "id": "6",
+      "title": "The Palace of Illusions",
+      "author": "Chitra Banerjee Divakaruni",
+      "genre": "Mythology",
+      "publishedYear": 2008,
+      "status": "Issued"
+    },
+    {
+      "id": "7",
+      "title": "Immortals of Meluha",
+      "author": "Amish Tripathi",
+      "genre": "Mythology",
+      "publishedYear": 2010,
+      "status": "Available"
+    },
+    {
+      "id": "8",
+      "title": "Chanakya’s Chant",
+      "author": "Ashwin Sanghi",
+      "genre": "Thriller",
+      "publishedYear": 2010,
+      "status": "Available"
+    },
+    {
+      "id": "9",
+      "title": "The Inheritance of Loss",
+      "author": "Kiran Desai",
+      "genre": "Fiction",
+      "publishedYear": 2006,
+      "status": "Available"
+    },
+    {
+      "id": "10",
+      "title": "Serious Men",
+      "author": "Manu Joseph",
+      "genre": "Satire",
+      "publishedYear": 2010,
+      "status": "Issued"
+    },
+    {
       "id": "12",
-      "title": "The Lean Startup",
-      "author": "Eric Ries",
-      "genre": "Business",
-      "publishedYear": 2019,
+      "title": "Shiva Trilogy: The Secret of the Nagas",
+      "author": "Amish Tripathi",
+      "genre": "Mythology",
+      "publishedYear": 2011,
+      "status": "Available"
+    },
+    {
+      "id": "13",
+      "title": "Five Point Someone",
+      "author": "Chetan Bhagat",
+      "genre": "Romance",
+      "publishedYear": 2004,
+      "status": "Available"
+    },
+    {
+      "id": "14",
+      "title": "2 States",
+      "author": "Chetan Bhagat",
+      "genre": "Romance",
+      "publishedYear": 2009,
+      "status": "Available"
+    },
+    {
+      "id": "15",
+      "title": "Half Girlfriend",
+      "author": "Chetan Bhagat",
+      "genre": "Romance",
+      "publishedYear": 2014,
+      "status": "Issued"
+    },
+    {
+      "id": "16",
+      "title": "The Great Indian Novel",
+      "author": "Shashi Tharoor",
+      "genre": "Satire",
+      "publishedYear": 1989,
       "status": "Available"
     },
     {
       "id": "17",
-      "title": "Educated",
-      "author": "Tara Westover",
-      "genre": "Memoir",
-      "publishedYear": 2018,
+      "title": "The Argumentative Indian",
+      "author": "Amartya Sen",
+      "genre": "Essays",
+      "publishedYear": 2005,
       "status": "Available"
     },
     {
       "id": "18",
-      "title": "Becoming",
-      "author": "Michelle Obama",
-      "genre": "Memoir",
-      "publishedYear": 2018,
+      "title": "Clear Light of Day",
+      "author": "Anita Desai",
+      "genre": "Fiction",
+      "publishedYear": 1980,
       "status": "Available"
     },
     {
       "id": "19",
-      "title": "The Pragmatic Programmer",
-      "author": "Andrew Hunt & David Thomas",
-      "genre": "Programming",
+      "title": "The Hungry Tide",
+      "author": "Amitav Ghosh",
+      "genre": "Fiction",
+      "publishedYear": 2004,
+      "status": "Issued"
+    },
+    {
+      "id": "20",
+      "title": "Sea of Poppies",
+      "author": "Amitav Ghosh",
+      "genre": "Historical Fiction",
+      "publishedYear": 2008,
+      "status": "Available"
+    },
+    {
+      "id": "21",
+      "title": "Shadow Lines",
+      "author": "Amitav Ghosh",
+      "genre": "Fiction",
+      "publishedYear": 1988,
+      "status": "Available"
+    },
+    {
+      "id": "22",
+      "title": "Delhi: A Novel",
+      "author": "Khushwant Singh",
+      "genre": "Historical Fiction",
+      "publishedYear": 1990,
+      "status": "Available"
+    },
+    {
+      "id": "23",
+      "title": "An Era of Darkness",
+      "author": "Shashi Tharoor",
+      "genre": "History",
+      "publishedYear": 2016,
+      "status": "Available"
+    },
+    {
+      "id": "24",
+      "title": "My Experiments with Truth",
+      "author": "Mahatma Gandhi",
+      "genre": "Autobiography",
+      "publishedYear": 1927,
+      "status": "Issued"
+    },
+    {
+      "id": "25",
+      "title": "Wings of Fire",
+      "author": "A. P. J. Abdul Kalam",
+      "genre": "Autobiography",
       "publishedYear": 1999,
       "status": "Available"
     },
     {
-      "id": "20",
-      "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
-      "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
-      "genre": "Programming",
-      "publishedYear": 1994,
+      "id": "26",
+      "title": "Ignited Minds",
+      "author": "A. P. J. Abdul Kalam",
+      "genre": "Inspirational",
+      "publishedYear": 2002,
+      "status": "Available"
+    },
+    {
+      "id": "27",
+      "title": "Why I Am a Hindu",
+      "author": "Shashi Tharoor",
+      "genre": "Religion",
+      "publishedYear": 2018,
+      "status": "Available"
+    },
+    {
+      "id": "28",
+      "title": "The Paradoxical Prime Minister",
+      "author": "Shashi Tharoor",
+      "genre": "Politics",
+      "publishedYear": 2018,
+      "status": "Available"
+    },
+    {
+      "id": "29",
+      "title": "Gitanjali",
+      "author": "Rabindranath Tagore",
+      "genre": "Poetry",
+      "publishedYear": 1910,
+      "status": "Available"
+    },
+    {
+      "id": "30",
+      "title": "Kabuliwala",
+      "author": "Rabindranath Tagore",
+      "genre": "Short Story",
+      "publishedYear": 1892,
+      "status": "Available"
+    },
+    {
+      "id": "31",
+      "title": "Malgudi Days",
+      "author": "R. K. Narayan",
+      "genre": "Short Stories",
+      "publishedYear": 1943,
+      "status": "Available"
+    },
+    {
+      "id": "32",
+      "title": "Swami and Friends",
+      "author": "R. K. Narayan",
+      "genre": "Fiction",
+      "publishedYear": 1935,
       "status": "Issued"
-    },
-    {
-      "id": "21",
-      "title": "Don Quixote",
-      "author": "Miguel de Cervantes",
-      "genre": "Classic",
-      "publishedYear": 1605,
-      "status": "Available"
-    },
-    {
-      "id": "ba17",
-      "title": "88888888",
-      "author": "hhhhh",
-      "genre": "jk",
-      "publishedYear": 2025,
-      "status": "Available"
-    },
-    {
-      "id": "63e3",
-      "title": "Gulshan",
-      "author": "Gulsha",
-      "genre": "adf",
-      "publishedYear": 2020,
-      "status": "Available"
-    },
-    {
-      "id": "9859",
-      "title": "Gulshan kumar",
-      "author": "Gulshan Kumar",
-      "genre": "gulshan",
-      "publishedYear": 2025,
-      "status": "Available"
-    },
-    {
-      "id": "2797",
-      "title": "df",
-      "author": "adfd",
-      "genre": "adfdsa",
-      "publishedYear": 2025,
-      "status": "Available"
     }
   ]
 }

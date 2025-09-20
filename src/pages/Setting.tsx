@@ -1,151 +1,77 @@
-import React, { useState, useEffect, type JSX } from 'react';
+import { useState, useEffect } from 'react';
 
-// Define specific types for different setting values
-type ToggleValue = boolean;
-type SelectValue = string;
-type InputValue = string;
-type RangeValue = number;
-
-// Union type for all possible setting values
-type SettingValue = ToggleValue | SelectValue | InputValue | RangeValue;
-
-interface BaseSettingItem {
+interface Setting {
   id: string;
-  category: string;
   name: string;
   description: string;
-  status: 'Active' | 'Inactive';
+  category: string;
+  type: 'toggle' | 'select';
+  value: boolean | string;
+  options?: string[];
+  icon: string;
 }
-
-interface ToggleSettingItem extends BaseSettingItem {
-  type: 'toggle';
-  value: ToggleValue;
-}
-
-interface SelectSettingItem extends BaseSettingItem {
-  type: 'select';
-  value: SelectValue;
-  options: string[];
-}
-
-interface InputSettingItem extends BaseSettingItem {
-  type: 'input';
-  value: InputValue;
-}
-
-interface RangeSettingItem extends BaseSettingItem {
-  type: 'range';
-  value: RangeValue;
-  min: number;
-  max: number;
-}
-
-// Union type for all setting items
-type SettingItem = ToggleSettingItem | SelectSettingItem | InputSettingItem | RangeSettingItem;
 
 export default function Settings() {
-  const [settings, setSettings] = useState<SettingItem[]>([]);
-  const [search, setSearch] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [settings, setSettings] = useState<Setting[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data - replace with actual API call
   useEffect(() => {
-    const mockSettings: SettingItem[] = [
+    const mockSettings: Setting[] = [
       {
         id: '1',
-        category: 'General',
         name: 'Dark Mode',
-        description: 'Enable dark theme across the application',
+        description: 'Switch between light and dark theme',
+        category: 'Appearance',
         type: 'toggle',
         value: true,
-        status: 'Active'
+        icon: '🌙'
       },
       {
         id: '2',
-        category: 'General',
         name: 'Language',
-        description: 'Select your preferred language',
+        description: 'Choose your preferred language',
+        category: 'General',
         type: 'select',
         value: 'English',
-        options: ['English', 'Spanish', 'French', 'German', 'Chinese'],
-        status: 'Active'
+        options: ['English', 'Spanish', 'French', 'German'],
+        icon: '🌍'
       },
       {
         id: '3',
-        category: 'Notifications',
         name: 'Email Notifications',
-        description: 'Receive notifications via email',
+        description: 'Receive important updates via email',
+        category: 'Notifications',
         type: 'toggle',
         value: false,
-        status: 'Active'
+        icon: '📧'
       },
       {
         id: '4',
-        category: 'Notifications',
-        name: 'Push Notifications',
-        description: 'Enable browser push notifications',
-        type: 'toggle',
-        value: true,
-        status: 'Active'
-      },
-      {
-        id: '5',
-        category: 'Privacy',
-        name: 'Profile Visibility',
+        name: 'Privacy Level',
         description: 'Control who can see your profile',
+        category: 'Privacy',
         type: 'select',
         value: 'Public',
         options: ['Public', 'Friends Only', 'Private'],
-        status: 'Active'
+        icon: '🔒'
+      },
+      {
+        id: '5',
+        name: 'Two-Factor Auth',
+        description: 'Add extra security to your account',
+        category: 'Security',
+        type: 'toggle',
+        value: true,
+        icon: '🔐'
       },
       {
         id: '6',
-        category: 'Privacy',
-        name: 'Data Collection',
-        description: 'Allow anonymous usage data collection',
-        type: 'toggle',
-        value: false,
-        status: 'Inactive'
-      },
-      {
-        id: '7',
-        category: 'Performance',
-        name: 'Cache Size',
-        description: 'Maximum cache size in MB',
-        type: 'range',
-        value: 512,
-        min: 100,
-        max: 2048,
-        status: 'Active'
-      },
-      {
-        id: '8',
-        category: 'Performance',
-        name: 'Auto-save Interval',
-        description: 'Minutes between auto-saves',
-        type: 'input',
-        value: '5',
-        status: 'Active'
-      },
-      {
-        id: '9',
-        category: 'Security',
-        name: 'Two-Factor Authentication',
-        description: 'Enable 2FA for enhanced security',
+        name: 'Auto-Save',
+        description: 'Automatically save your work',
+        category: 'General',
         type: 'toggle',
         value: true,
-        status: 'Active'
-      },
-      {
-        id: '10',
-        category: 'Security',
-        name: 'Session Timeout',
-        description: 'Auto logout after inactivity (minutes)',
-        type: 'select',
-        value: '30',
-        options: ['15', '30', '60', '120', 'Never'],
-        status: 'Active'
+        icon: '💾'
       }
     ];
     
@@ -155,262 +81,139 @@ export default function Settings() {
     }, 1000);
   }, []);
 
-  const categories: string[] = ['All', ...Array.from(new Set(settings.map(s => s.category)))];
-  
-  const filteredSettings = settings.filter((setting: SettingItem) => {
-    const matchesSearch = setting.name.toLowerCase().includes(search.toLowerCase()) ||
-                         setting.description.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || setting.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const handleSettingChange = (id: string, newValue: SettingValue): void => {
-    setSettings(prev => prev.map((setting: SettingItem) => 
-      setting.id === id ? { ...setting, value: newValue } as SettingItem : setting
+  const updateSetting = (id: string, newValue: boolean | string) => {
+    setSettings(prev => prev.map(setting => 
+      setting.id === id ? { ...setting, value: newValue } : setting
     ));
   };
 
-  const renderSettingControl = (setting: SettingItem): JSX.Element | null => {
-    switch (setting.type) {
-      case 'toggle': {
-        return (
-          <label className="flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={(setting as ToggleSettingItem).value}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                handleSettingChange(setting.id, e.target.checked)
-              }
-              className="sr-only"
-            />
-            <div className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              (setting as ToggleSettingItem).value ? 'bg-blue-600' : 'bg-slate-600'
-            }`}>
-              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                (setting as ToggleSettingItem).value ? 'translate-x-6' : 'translate-x-1'
-              }`} />
-            </div>
-          </label>
-        );
-      }
-      
-      case 'select': {
-        return (
-          <select
-            value={(setting as SelectSettingItem).value}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => 
-              handleSettingChange(setting.id, e.target.value)
-            }
-            className="bg-slate-700 text-white border border-slate-600 rounded px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500"
-          >
-            {(setting as SelectSettingItem).options.map((option: string) => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
-        );
-      }
-      
-      case 'input': {
-        return (
-          <input
-            type="text"
-            value={(setting as InputSettingItem).value}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-              handleSettingChange(setting.id, e.target.value)
-            }
-            className="bg-slate-700 text-white border border-slate-600 rounded px-3 py-1 text-sm w-20 focus:ring-2 focus:ring-blue-500"
-          />
-        );
-      }
-      
-      case 'range': {
-        const rangeSetting = setting as RangeSettingItem;
-        return (
-          <div className="flex items-center space-x-2">
-            <input
-              type="range"
-              min={rangeSetting.min}
-              max={rangeSetting.max}
-              value={rangeSetting.value}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                handleSettingChange(setting.id, parseInt(e.target.value, 10))
-              }
-              className="w-24 accent-blue-600"
-            />
-            <span className="text-blue-400 text-sm font-medium min-w-[50px]">
-              {rangeSetting.value}{setting.name.includes('MB') ? 'MB' : ''}
-            </span>
-          </div>
-        );
-      }
-      
-      default:
-        return null;
-    }
-  };
+  const categories = Array.from(new Set(settings.map(s => s.category)));
 
   if (loading) {
     return (
-      <div className="p-6 max-w-6xl mx-auto">
-        <div className="animate-pulse">
-          <div className="h-8 bg-slate-700 rounded mb-6 w-48"></div>
-          <div className="h-12 bg-slate-700 rounded mb-6"></div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            {[1,2,3,4].map((i: number) => (
-              <div key={i} className="h-20 bg-slate-700 rounded"></div>
-            ))}
-          </div>
-          <div className="flex space-x-2 mb-6">
-            {[1,2,3,4,5].map((i: number) => (
-              <div key={i} className="h-8 bg-slate-700 rounded w-20"></div>
-            ))}
-          </div>
-          <div className="space-y-4">
-            {[1,2,3,4,5,6].map((i: number) => (
-              <div key={i} className="h-24 bg-slate-700 rounded"></div>
-            ))}
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="animate-pulse">
+            <div className="text-center mb-12">
+              <div className="h-12 bg-slate-700 rounded-lg w-64 mx-auto mb-4"></div>
+              <div className="h-6 bg-slate-700 rounded w-96 mx-auto"></div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[1,2,3,4,5,6].map(i => (
+                <div key={i} className="bg-slate-800 rounded-2xl p-6 h-32"></div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  const handleCategoryChange = (category: string): void => {
-    setSelectedCategory(category);
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearch(e.target.value);
-  };
-
-  const handleResetToDefaults = (): void => {
-    // Implementation for reset functionality
-    console.log('Reset to defaults clicked');
-  };
-
-  const handleSaveChanges = (): void => {
-    // Implementation for save functionality
-    console.log('Save changes clicked');
-  };
-
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-          ⚙️ Settings Configuration
-        </h1>
-        <p className="text-slate-300">Customize your application preferences and settings</p>
-      </div>
-
-      {/* Search Bar */}
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="🔍 Search settings by name or description..."
-          value={search}
-          onChange={handleSearchChange}
-          className="w-full p-4 bg-slate-800 text-white placeholder-slate-400 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-        />
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
-          <div className="text-2xl font-bold text-blue-400">{settings.length}</div>
-          <div className="text-slate-300 text-sm">Total Settings</div>
+    <div className="min-h-screen  p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-4">
+            Settings
+          </h1>
+          <p className="text-slate-300 text-xl">Customize your experience to your liking</p>
         </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
-          <div className="text-2xl font-bold text-green-400">
-            {settings.filter((s: SettingItem) => s.status === 'Active').length}
-          </div>
-          <div className="text-slate-300 text-sm">Active</div>
-        </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
-          <div className="text-2xl font-bold text-purple-400">
-            {categories.length - 1}
-          </div>
-          <div className="text-slate-300 text-sm">Categories</div>
-        </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4">
-          <div className="text-2xl font-bold text-yellow-400">
-            {settings.filter((s: SettingItem) => s.type === 'toggle' && (s as ToggleSettingItem).value).length}
-          </div>
-          <div className="text-slate-300 text-sm">Enabled</div>
-        </div>
-      </div>
 
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {categories.map((category: string) => (
-          <button
-            key={category}
-            onClick={() => handleCategoryChange(category)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              selectedCategory === category
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700 border border-slate-700'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      {/* Settings List */}
-      <div className="space-y-4">
-        {filteredSettings.map((setting: SettingItem) => (
-          <div
-            key={setting.id}
-            className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:bg-slate-800/70 transition-all duration-200"
-          >
-            <div className="flex justify-between items-start">
-              <div className="flex-1 mr-4">
-                <div className="flex items-center space-x-3 mb-2">
-                  <h3 className="text-lg font-semibold text-white">{setting.name}</h3>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    setting.status === 'Active' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                  }`}>
-                    {setting.status}
-                  </span>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-medium">
-                    {setting.category}
-                  </span>
+        {/* Settings Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {settings.map((setting) => (
+            <div
+              key={setting.id}
+              className="group bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 hover:bg-slate-800/70 hover:border-slate-600/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-4 flex-1">
+                  {/* Icon */}
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
+                    {setting.icon}
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h3 className="text-white font-semibold text-lg">{setting.name}</h3>
+                      <span className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs font-medium">
+                        {setting.category}
+                      </span>
+                    </div>
+                    <p className="text-slate-400 text-sm leading-relaxed">{setting.description}</p>
+                  </div>
                 </div>
-                <p className="text-slate-400 text-sm">{setting.description}</p>
-              </div>
-              <div className="flex items-center">
-                {renderSettingControl(setting)}
+                
+                {/* Control */}
+                <div className="ml-4">
+                  {setting.type === 'toggle' ? (
+                    <label className="flex items-center cursor-pointer group-hover:scale-110 transition-transform duration-300">
+                      <input
+                        type="checkbox"
+                        checked={setting.value as boolean}
+                        onChange={(e) => updateSetting(setting.id, e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 ${
+                        setting.value 
+                          ? 'bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/30' 
+                          : 'bg-slate-600 hover:bg-slate-500'
+                      }`}>
+                        <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 shadow-lg ${
+                          setting.value ? 'translate-x-6' : 'translate-x-1'
+                        }`} />
+                      </div>
+                    </label>
+                  ) : (
+                    <div className="relative">
+                      <select
+                        value={setting.value as string}
+                        onChange={(e) => updateSetting(setting.id, e.target.value)}
+                        className="appearance-none bg-slate-700/70 text-white border border-slate-600/50 rounded-xl px-4 py-2 pr-8 text-sm focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 hover:bg-slate-700 cursor-pointer"
+                      >
+                        {setting.options?.map(option => (
+                          <option key={option} value={option} className="bg-slate-800 text-white">{option}</option>
+                        ))}
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {/* No Results */}
-      {filteredSettings.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">⚙️</div>
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No settings found</h3>
-          <p className="text-slate-400">Try adjusting your search terms or category filter</p>
+          ))}
         </div>
-      )}
 
-      {/* Save Button */}
-      <div className="mt-8 pt-6 border-t border-slate-700">
-        <div className="flex justify-end space-x-4">
-          <button 
-            onClick={handleResetToDefaults}
-            className="px-6 py-2 bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors duration-200"
-          >
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 text-center">
+            <div className="text-3xl font-bold text-blue-400 mb-2">{settings.length}</div>
+            <div className="text-slate-300 text-sm">Total Settings</div>
+          </div>
+          <div className="bg-gradient-to-br from-green-500/10 to-green-600/5 border border-green-500/20 rounded-2xl p-6 text-center">
+            <div className="text-3xl font-bold text-green-400 mb-2">
+              {settings.filter(s => s.type === 'toggle' && s.value === true).length}
+            </div>
+            <div className="text-slate-300 text-sm">Enabled Features</div>
+          </div>
+          <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 text-center">
+            <div className="text-3xl font-bold text-purple-400 mb-2">{categories.length}</div>
+            <div className="text-slate-300 text-sm">Categories</div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <button className="px-8 py-3 bg-slate-700/50 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition-all duration-300 font-medium border border-slate-600/50 hover:border-slate-500">
             Reset to Defaults
           </button>
-          <button 
-            onClick={handleSaveChanges}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
-          >
+          <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl transition-all duration-300 font-medium shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:-translate-y-0.5">
             Save Changes
           </button>
         </div>
