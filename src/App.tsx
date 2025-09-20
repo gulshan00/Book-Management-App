@@ -4,8 +4,9 @@ import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
 import Message from "./pages/Message";
 import Setting from "./pages/Setting";
-import Profile from "./pages/Profile";
+import ProfilePage from "./pages/Profile";
 import LoginPage from "./pages/Login";
+
 
 export default function App() {
   return (
@@ -20,7 +21,7 @@ export default function App() {
           <Route path="books" element={<Books />} />
           <Route path="message" element={<Message />} />
           <Route path="setting" element={<Setting />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

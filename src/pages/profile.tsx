@@ -21,7 +21,7 @@ interface FormErrors {
   phone?: string;
 }
 
-export default function Profile() {
+export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
   const [editing, setEditing] = useState(false);
   const [tab, setTab] = useState<'overview' | 'activity'>('overview');
