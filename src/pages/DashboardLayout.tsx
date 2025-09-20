@@ -343,20 +343,6 @@ export default function DashboardLayout() {
             </div>
           </div>
         </header>
-
-        {/* Mobile Search Bar */}
-        <div className="md:hidden p-4 bg-slate-800/95 backdrop-blur-xl border-b border-slate-700/50 flex-shrink-0">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} aria-hidden="true" />
-            <input
-              type="text"
-              placeholder="Search books and authors..."
-              className="pl-11 pr-4 py-3 w-full border-2 border-slate-600/50 rounded-2xl bg-slate-700/50 focus:bg-slate-700 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/20 transition-all duration-300 outline-none shadow-lg text-white placeholder-slate-400"
-              aria-label="Search books and authors"
-            />
-          </div>
-        </div>
-
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800/50" role="main">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
