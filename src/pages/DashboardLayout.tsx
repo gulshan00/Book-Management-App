@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Settings, Users,LogOut, Menu, X,BookOpen, Search, Bell, ChevronDown, UserCircle } from 'lucide-react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Settings, Users, LogOut, Menu, X, BookOpen, Search, Bell, ChevronDown, UserCircle } from 'lucide-react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { toast,} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface NavigationItem {
   path: string;
@@ -14,6 +16,7 @@ export default function DashboardLayout() {
   const [isMobile, setIsMobile] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Handle responsive behavior
   useEffect(() => {
@@ -24,7 +27,6 @@ export default function DashboardLayout() {
         setSidebarOpen(false);
       }
     };
-    
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
@@ -38,7 +40,6 @@ export default function DashboardLayout() {
         setSidebarOpen(false);
       }
     };
-
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isMobile, sidebarOpen]);
@@ -51,7 +52,6 @@ export default function DashboardLayout() {
         setUserDropdownOpen(false);
       }
     };
-
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [userDropdownOpen]);
@@ -78,8 +78,12 @@ export default function DashboardLayout() {
     if (isMobile) setSidebarOpen(false);
   };
 
+  // ✅ Logout function
   const handleLogout = () => {
-    alert("Logout functionality would be implemented here");
+    toast.success("✅ Logout successful!", { autoClose: 2000 });
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
   };
 
   const getCurrentPageTitle = (): string => {
@@ -206,18 +210,18 @@ export default function DashboardLayout() {
 
         {/* Logout Button */}
         <div className="p-4 border-t border-slate-700/50 flex-shrink-0">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 transition-all duration-300 shadow-xl hover:shadow-red-500/20 transform hover:scale-[1.01] group border border-red-500/30"
-            type="button"
-            aria-label="Logout"
-          >
-            <div className="p-1.5 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
-              <LogOut size={16} />
-            </div>
-            <span className="font-semibold text-sm">Logout</span>
-          </button>
-        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 transition-all duration-300 shadow-xl hover:shadow-red-500/20 transform hover:scale-[1.01] group border border-red-500/30"
+          type="button"
+          aria-label="Logout"
+        >
+          <div className="p-1.5 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
+            <LogOut size={16} />
+          </div>
+          <span className="font-semibold text-sm">Logout</span>
+        </button>
+      </div>
       </aside>
 
       {/* Main Content Area */}
@@ -354,3 +358,8 @@ export default function DashboardLayout() {
     </div>
   );
 }
+
+
+
+
+
