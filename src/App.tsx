@@ -6,6 +6,7 @@ import Message from "./pages/Message";
 import Setting from "./pages/Setting";
 // import ProfilePage from "./pages/Profile";
 import LoginPage from "./pages/Login";
+import Profilepage from "./pages/Profilpage";
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="message" element={<Message />} />
           <Route path="setting" element={<Setting />} />
           {/* <Route path="profile" element={<ProfilePage />} /> */}
+          <Route path="profile" element={<Profilepage />} />
         </Route>
       </Routes>
     </BrowserRouter>
