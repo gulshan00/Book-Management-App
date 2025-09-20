@@ -36,7 +36,7 @@ export default function Profile() {
       name: 'John Doe',
       email: 'john.doe@bookdash.com',
       role: 'Admin',
-      phone: '+91 98765 43310',
+      phone: '+91 98765 43410',
       joinedDate: '2023-01-15',
       issuedBooks: 3,
       totalIssued: 45,
