@@ -13,7 +13,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BookSkeleton from "../components/BookSkeleton";
 
-
 const Dashboard: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
@@ -104,65 +103,98 @@ const Dashboard: React.FC = () => {
     <div className="p-4 md:p-8 max-w-7xl mx-auto">
       <ToastContainer position="top-right" autoClose={2000} />
 
-      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">
-        📚 Book Management Dashboard
-      </h1>
-
-      {/* Search & Filters */}
-      <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Search by title or author"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="p-2 border rounded flex-1 min-w-[200px] focus:ring-2 focus:ring-blue-500"
-        />
-
-        <div className="flex gap-2">
-          <select
-            value={filterGenre}
-            onChange={(e) => setFilterGenre(e.target.value)}
-            className="p-2 border rounded focus:ring-2 focus:ring-blue-500"
-          >
-            {genres.map((g) => (
-              <option key={g} value={g}>
-                {g}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="p-2 border rounded focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="All">All Status</option>
-            <option value="Available">Available</option>
-            <option value="Issued">Issued</option>
-          </select>
-        </div>
-
-        <button
-          onClick={() => {
-            setEditingBook(null);
-            setIsFormOpen(true);
-          }}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
-        >
-          ➕ Add Book
-        </button>
+      {/* Header with gradient text */}
+      <div className="text-center md:text-left mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+          📚 Book Management Dashboard
+        </h1>
+        <p className="text-slate-300 text-lg">Manage your library collection with ease</p>
       </div>
 
-      {/* Loading Spinner */}
+      {/* Search & Filters - Enhanced styling */}
+      <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 mb-8 shadow-xl">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+          {/* Search Input */}
+          <div className="flex-1 min-w-[250px]">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="🔍 Search by title or author"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full p-3 pl-4 bg-slate-700/50 text-white placeholder-slate-400 border border-slate-600/50 rounded-lg focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 hover:bg-slate-700/70"
+              />
+            </div>
+          </div>
+
+          {/* Filter Controls */}
+          <div className="flex gap-3">
+            <select
+              value={filterGenre}
+              onChange={(e) => setFilterGenre(e.target.value)}
+              className="p-3 bg-slate-700/50 text-white border border-slate-600/50 rounded-lg focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 hover:bg-slate-700/70"
+            >
+              {genres.map((g) => (
+                <option key={g} value={g} className="bg-slate-800 text-white">
+                  {g === "All" ? "🎭 All Genres" : `📖 ${g}`}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="p-3 bg-slate-700/50 text-white border border-slate-600/50 rounded-lg focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 hover:bg-slate-700/70"
+            >
+              <option value="All" className="bg-slate-800 text-white">📊 All Status</option>
+              <option value="Available" className="bg-slate-800 text-white">✅ Available</option>
+              <option value="Issued" className="bg-slate-800 text-white">📤 Issued</option>
+            </select>
+          </div>
+
+          {/* Add Book Button */}
+          <button
+            onClick={() => {
+              setEditingBook(null);
+              setIsFormOpen(true);
+            }}
+            className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-medium rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all duration-200 transform hover:scale-105 hover:shadow-lg shadow-green-500/20"
+          >
+            ➕ Add New Book
+          </button>
+        </div>
+      </div>
+
+      {/* Results Summary */}
+      {!loading && (
+        <div className="mb-6">
+          <p className="text-slate-300 text-sm">
+            Showing <span className="text-blue-400 font-semibold">{currentBooks.length}</span> of{" "}
+            <span className="text-blue-400 font-semibold">{filteredBooks.length}</span> books
+            {search && (
+              <span className="ml-2">
+                for "<span className="text-cyan-400">{search}</span>"
+              </span>
+            )}
+          </p>
+        </div>
+      )}
+
+      {/* Loading State */}
       {loading ? (
-        
-        <><div className="flex justify-center items-center py-12">
-          <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-        </div><BookSkeleton /></>
+        <div className="space-y-6">
+          <div className="flex justify-center items-center py-12">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-slate-600 border-dashed rounded-full animate-spin"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-blue-500 rounded-full animate-spin"></div>
+            </div>
+          </div>
+          <BookSkeleton />
+        </div>
       ) : (
         <>
-          {/* Responsive Table */}
-          <div className="overflow-x-auto rounded-lg shadow">
+          {/* Enhanced Table Container */}
+          <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl overflow-hidden shadow-2xl mb-8">
             <BookTable
               books={currentBooks}
               onEdit={(book) => {
@@ -174,21 +206,23 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Pagination */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(filteredBooks.length / booksPerPage)}
-            onPageChange={setCurrentPage}
-          />
+          <div className="flex justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(filteredBooks.length / booksPerPage)}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </>
       )}
 
-      {/* Modal Form */}
+      {/* Enhanced Modal Form */}
       {isFormOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 px-4">
+          <div className="bg-slate-800 border border-slate-700/50 p-6 rounded-xl shadow-2xl w-full max-w-lg relative">
             <button
               onClick={() => setIsFormOpen(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
+              className="absolute top-4 right-4 text-slate-400 hover:text-red-400 transition-colors duration-200 text-xl"
             >
               ✖
             </button>

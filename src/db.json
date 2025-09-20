@@ -1,35 +1,11 @@
 {
   "books": [
     {
-      "id": "9",
-      "title": "The Hobbit",
-      "author": "J.R.R. Tolkien",
-      "genre": "Fantasy",
-      "publishedYear": 1937,
-      "status": "Available"
-    },
-    {
-      "id": "10",
-      "title": "Harry Potter and the Sorcerer's Stone",
-      "author": "J.K. Rowling",
-      "genre": "Fantasy",
-      "publishedYear": 1997,
-      "status": "Available"
-    },
-    {
-      "id": "11",
-      "title": "The Fellowship of the Ring",
-      "author": "J.R.R. Tolkien",
-      "genre": "Fantasy",
-      "publishedYear": 1954,
-      "status": "Issued"
-    },
-    {
       "id": "12",
       "title": "The Lean Startup",
       "author": "Eric Ries",
       "genre": "Business",
-      "publishedYear": 2011,
+      "publishedYear": 2019,
       "status": "Available"
     },
     {
@@ -39,14 +15,6 @@
       "genre": "Finance",
       "publishedYear": 1997,
       "status": "Available"
-    },
-    {
-      "id": "14",
-      "title": "The Power of Now",
-      "author": "Eckhart Tolle",
-      "genre": "Spirituality",
-      "publishedYear": 1997,
-      "status": "Issued"
     },
     {
       "id": "17",
@@ -89,18 +57,34 @@
       "status": "Available"
     },
     {
-      "id": "fb51",
-      "title": "drjnjdf",
-      "author": "adf",
-      "genre": "adf",
+      "id": "ba17",
+      "title": "88888888",
+      "author": "hhhhh",
+      "genre": "jk",
       "publishedYear": 2025,
-      "status": "Issued"
+      "status": "Available"
     },
     {
-      "id": "ba17",
-      "title": "545",
-      "author": "42",
-      "genre": "j",
+      "id": "63e3",
+      "title": "Gulshan",
+      "author": "Gulsha",
+      "genre": "adf",
+      "publishedYear": 2020,
+      "status": "Available"
+    },
+    {
+      "id": "8d81",
+      "title": "jhgjhgjhhjgjhg",
+      "author": "mnbjhbjh",
+      "genre": "nbbbjbh",
+      "publishedYear": 2025,
+      "status": "Available"
+    },
+    {
+      "id": "9859",
+      "title": "Gulshan kumar",
+      "author": "Gulshan Kumar",
+      "genre": "gulshan",
       "publishedYear": 2025,
       "status": "Available"
     }

@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Book, Users, Settings, LogOut, Menu, X, Search, Bell, ChevronDown, UserCircle } from 'lucide-react';
+import { LayoutDashboard, Settings, LogOut, Menu, X,BookOpen, Search, Bell, ChevronDown, UserCircle } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+
+interface NavigationItem {
+  path: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  label: string;
+  color: string;
+}
 
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -11,9 +18,9 @@ export default function DashboardLayout() {
   // Handle responsive behavior
   useEffect(() => {
     const checkScreenSize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      if (!mobile) {
+      if (window.innerWidth >= 1024) {
         setSidebarOpen(false);
       }
     };
@@ -36,21 +43,37 @@ export default function DashboardLayout() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isMobile, sidebarOpen]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (userDropdownOpen && !target.closest('[data-user-dropdown]')) {
+        setUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [userDropdownOpen]);
+
   // Navigation items
-  const navigationItems = [
-    { path: "/", icon: LayoutDashboard, label: "Dashboard" },
-    { path: "/", icon: Book, label: "Books" },
-    { path: "/", icon: Users, label: "Authors" },
-    { path: "/", icon: Settings, label: "Settings" },
+  const navigationItems: NavigationItem[] = [
+    { path: "/", icon: LayoutDashboard, label: "Dashboard", color: "from-emerald-500 to-teal-600" },
+    { path: "/books", icon: BookOpen, label: "Books", color: "from-violet-500 to-purple-600" },
+    // { path: "/authors", icon: Users, label: "Authors", color: "from-orange-500 to-red-500" },
+    // { path: "/settings", icon: Settings, label: "Settings", color: "from-slate-500 to-gray-600" },
   ];
 
-  const isActiveRoute = (path: string) => location.pathname === path || (path === "/dashboard" && location.pathname === "/");
+  const isActiveRoute = (path: string): boolean => {
+    if (path === '/' && location.pathname === '/') return true;
+    return location.pathname === path;
+  };
 
   const handleMobileMenuToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleMobileLinkClick = () => {
+  const handleNavClick = () => {
     if (isMobile) setSidebarOpen(false);
   };
 
@@ -58,16 +81,21 @@ export default function DashboardLayout() {
     alert("Logout functionality would be implemented here");
   };
 
+  const getCurrentPageTitle = (): string => {
+    if (location.pathname === '/') return 'Dashboard';
+    return location.pathname.replace('/', '').replace('-', ' ');
+  };
+
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-blue-50 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
       {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-all duration-300"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-all duration-300"
           onClick={() => setSidebarOpen(false)}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => {
+          onKeyDown={(e: React.KeyboardEvent) => {
             if (e.key === 'Escape') setSidebarOpen(false);
           }}
           aria-label="Close sidebar"
@@ -75,123 +103,155 @@ export default function DashboardLayout() {
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed md:static top-0 left-0 h-full w-72 bg-white/90 backdrop-blur-xl shadow-2xl z-50
+      <aside className={`fixed lg:static top-0 left-0 h-full w-72 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl z-50
         transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-        md:translate-x-0 transition-all duration-300 ease-out flex flex-col border-r border-white/20 overflow-hidden`}>
+        lg:translate-x-0 transition-all duration-300 ease-out flex flex-col border-r border-slate-700/50 overflow-hidden`}>
         
         {/* Logo Section */}
-        <div className="p-6 border-b border-gray-100/50 flex-shrink-0">
+        <div className="p-4 border-b border-slate-700/50 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-lg" role="img" aria-label="Books">📚</span>
+              <div className="relative">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-xl">
+                  <span className="text-white font-bold text-lg" role="img" aria-label="Books">📚</span>
+                </div>
+                <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full animate-pulse"></div>
               </div>
               <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
                   BookDash
                 </h1>
-                <p className="text-xs text-gray-500">Library Management</p>
+                <p className="text-xs text-slate-400 font-medium">Library Management</p>
               </div>
             </div>
             {isMobile && (
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-700 rounded-lg transition-all duration-200 text-slate-400 hover:text-white"
                 aria-label="Close sidebar"
               >
-                <X size={20} className="text-gray-600" />
+                <X size={20} />
               </button>
             )}
           </div>
         </div>
 
+        {/* User Profile Preview */}
+        <div className="p-4 border-b border-slate-700/50">
+          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-slate-800 to-slate-700 rounded-xl border border-slate-600/50">
+            <div className="relative">
+              <img
+                src="https://i.pravatar.cc/40?img=1"
+                alt="User Profile"
+                className="w-10 h-10 rounded-full border-2 border-emerald-400 shadow-lg"
+              />
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-slate-800 rounded-full"></div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-white text-sm truncate">John Doe</p>
+              <p className="text-emerald-400 text-xs font-medium truncate">Administrator</p>
+            </div>
+          </div>
+        </div>
+
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent" role="navigation" aria-label="Main navigation">
-          {navigationItems.map(({ path, icon: Icon, label }) => (
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent" role="navigation" aria-label="Main navigation">
+          {navigationItems.map(({ path, icon: Icon, label, color }) => (
             <Link
               key={path}
               to={path}
-              onClick={handleMobileLinkClick}
-              className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 text-left group ${
+              onClick={handleNavClick}
+              className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 text-left group relative overflow-hidden ${
                 isActiveRoute(path)
-                  ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg transform scale-[1.02]"
-                  : "hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 text-gray-700 hover:text-gray-900"
+                  ? `bg-gradient-to-r ${color} text-white shadow-xl shadow-emerald-500/20 transform scale-[1.01] border border-white/20`
+                  : "hover:bg-slate-700/50 text-slate-300 hover:text-white border border-transparent hover:border-slate-600/50"
               }`}
               aria-current={isActiveRoute(path) ? "page" : undefined}
             >
-              <Icon 
-                size={20} 
-                className={`transition-colors ${
-                  isActiveRoute(path) 
-                    ? "text-white" 
-                    : "text-gray-600 group-hover:text-blue-600"
-                }`} 
-                aria-hidden="true"
-              />
-              <span className={`font-medium ${
+              {/* Active indicator */}
+              {isActiveRoute(path) && (
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-xl"></div>
+              )}
+              
+              <div className={`p-2 rounded-lg transition-all duration-300 relative z-10 ${
+                isActiveRoute(path) 
+                  ? "bg-white/20 shadow-md" 
+                  : "bg-slate-700/50 group-hover:bg-slate-600/70"
+              }`}>
+                <Icon 
+                  size={18} 
+                  className={`transition-all duration-300 ${
+                    isActiveRoute(path) 
+                      ? "text-white" 
+                      : "text-slate-400 group-hover:text-white"
+                  }`} 
+                />
+              </div>
+              <span className={`font-semibold text-sm transition-all duration-300 relative z-10 ${
                 isActiveRoute(path) 
                   ? "text-white" 
-                  : "group-hover:text-gray-900"
+                  : "text-slate-300 group-hover:text-white"
               }`}>
                 {label}
               </span>
+              
+              {/* Hover effect */}
+              {!isActiveRoute(path) && (
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-700/0 via-slate-600/20 to-slate-700/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out rounded-xl"></div>
+              )}
             </Link>
           ))}
         </nav>
 
-        {/* User Profile Section */}
-        <div className="p-4 border-t border-gray-100/50 space-y-3 flex-shrink-0">
-          {/* User Info */}
-          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl">
-            <img
-              src="https://i.pravatar.cc/40?img=1"
-              alt="User Profile"
-              className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-800 truncate">John Doe</p>
-              <p className="text-sm text-gray-500 truncate">Administrator</p>
-            </div>
-          </div>
-          
-          {/* Logout Button */}
+        {/* Logout Button */}
+        <div className="p-4 border-t border-slate-700/50 flex-shrink-0">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 transition-all duration-300 shadow-xl hover:shadow-red-500/20 transform hover:scale-[1.01] group border border-red-500/30"
             type="button"
             aria-label="Logout"
           >
-            <LogOut size={18} aria-hidden="true" />
-            <span className="font-medium">Logout</span>
+            <div className="p-1.5 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
+              <LogOut size={16} />
+            </div>
+            <span className="font-semibold text-sm">Logout</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-        {/* Top Header */}
-        <header className="flex items-center justify-between bg-white/80 backdrop-blur-xl p-4 lg:px-6 shadow-sm border-b border-white/20 sticky top-0 z-30 flex-shrink-0">
+        {/* Enhanced Dark Top Header */}
+        <header className="flex items-center justify-between bg-slate-800/95 backdrop-blur-xl px-4 lg:px-6 py-3 shadow-2xl border-b border-slate-700/50 sticky top-0 z-30 flex-shrink-0">
           {/* Left Section */}
           <div className="flex items-center gap-4">
             {/* Mobile Menu Button */}
             <button
               data-sidebar-toggle
               onClick={handleMobileMenuToggle}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="lg:hidden p-2.5 hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/50 text-slate-300 hover:text-white"
               type="button"
               aria-label="Toggle sidebar"
             >
-              <Menu size={24} className="text-gray-700" />
+              <Menu size={20} />
             </button>
 
+            {/* Page Title */}
+            <div className="hidden sm:block">
+              <h2 className="text-xl font-bold text-white capitalize">
+                {getCurrentPageTitle()}
+              </h2>
+              <p className="text-slate-400 text-xs font-medium mt-0.5">Welcome back, manage your library efficiently</p>
+            </div>
+
             {/* Desktop Search Bar */}
-            <div className="relative hidden md:flex items-center">
-              <Search className="absolute left-3 text-gray-400" size={18} aria-hidden="true" />
+            <div className="relative hidden md:flex items-center ml-6">
+              <Search className="absolute left-3 text-slate-400" size={18} aria-hidden="true" />
               <input
                 type="text"
-                placeholder="Search books, authors, or topics..."
-                className="pl-10 pr-4 py-2.5 w-80 lg:w-96 border border-gray-200 rounded-xl bg-gray-50/50 backdrop-blur-sm focus:bg-white focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200 outline-none text-sm"
-                aria-label="Search books, authors, or topics"
+                placeholder="Search books, authors, categories..."
+                className="pl-10 pr-4 py-2.5 w-72 lg:w-80 xl:w-96 border border-slate-600/50 rounded-xl bg-slate-700/50 backdrop-blur-sm focus:bg-slate-700 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-300 outline-none text-white placeholder-slate-400 text-sm font-medium shadow-lg"
+                aria-label="Search books, authors, or categories"
               />
             </div>
           </div>
@@ -200,70 +260,79 @@ export default function DashboardLayout() {
           <div className="flex items-center gap-3">
             {/* Mobile Search Button */}
             <button 
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="md:hidden p-2.5 hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/50 text-slate-300 hover:text-white"
               type="button"
               aria-label="Search"
             >
-              <Search size={20} className="text-gray-600" />
+              <Search size={18} />
             </button>
 
             {/* Notifications */}
-            <button 
-              className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              type="button"
-              aria-label="Notifications"
-            >
-              <Bell size={20} className="text-gray-600" />
-              <span 
-                className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center"
-                aria-label="3 unread notifications"
+            <div className="relative">
+              <button 
+                className="relative p-2.5 hover:bg-slate-700/50 rounded-lg transition-all duration-200 border border-slate-600/50 group text-slate-300 hover:text-white"
+                type="button"
+                aria-label="Notifications"
               >
-                3
-              </span>
-            </button>
+                <Bell size={18} className="transition-colors" />
+                <div className="absolute -top-1 -right-1 flex items-center justify-center">
+                  <span className="w-5 h-5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                    5
+                  </span>
+                </div>
+              </button>
+            </div>
 
-            {/* Welcome Message - Hidden on mobile */}
-            <span className="hidden lg:block text-gray-600 font-medium">
-              Good morning! 👋
-            </span>
+            {/* Time & Date - Hidden on mobile */}
+            <div className="hidden xl:flex flex-col items-end text-slate-300 mr-2">
+              <span className="font-bold text-sm text-white">{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              <span className="text-xs font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+            </div>
 
             {/* Profile Dropdown */}
-            <div className="relative">
+            <div className="relative" data-user-dropdown>
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 p-1 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
+                className="flex items-center gap-2 p-1.5 hover:bg-slate-700/50 rounded-xl transition-all duration-200 cursor-pointer border border-slate-600/50 group"
                 aria-expanded={userDropdownOpen}
                 aria-haspopup="true"
               >
-                <img
-                  src="https://i.pravatar.cc/40?img=1"
-                  alt="Profile"
-                  className="w-8 h-8 lg:w-9 lg:h-9 rounded-full border-2 border-white shadow-sm"
-                />
-                <div className="hidden sm:block text-right">
-                  <p className="text-sm font-medium text-gray-800">John Doe</p>
-                  <p className="text-xs text-gray-500">Admin</p>
+                <div className="relative">
+                  <img
+                    src="https://i.pravatar.cc/40?img=1"
+                    alt="Profile"
+                    className="w-8 h-8 lg:w-9 lg:h-9 rounded-full border-2 border-emerald-400 shadow-lg"
+                  />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-slate-800 rounded-full"></div>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${
+                <div className="hidden sm:block text-left">
+                  <p className="text-xs font-bold text-white">John Doe</p>
+                  <p className="text-xs text-slate-400 font-medium">Admin</p>
+                </div>
+                <ChevronDown className={`w-3 h-3 text-slate-400 transition-all duration-300 group-hover:text-white ${
                   userDropdownOpen ? 'rotate-180' : ''
                 }`} />
               </button>
 
               {/* Dropdown Menu */}
               {userDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                  <button className="flex items-center gap-3 w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                <div className="absolute right-0 top-full mt-3 w-56 bg-slate-800/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 py-2 z-50 animate-in slide-in-from-top-2 duration-200">
+                  <div className="px-4 py-3 border-b border-slate-700/50">
+                    <p className="font-bold text-white">John Doe</p>
+                    <p className="text-sm text-slate-400">john.doe@bookdash.com</p>
+                  </div>
+                  <button className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors font-medium">
                     <UserCircle className="w-4 h-4" />
                     Profile Settings
                   </button>
-                  <button className="flex items-center gap-3 w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                  <button className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors font-medium">
                     <Settings className="w-4 h-4" />
                     Preferences
                   </button>
-                  <hr className="my-2" />
+                  <hr className="my-2 border-slate-700/50" />
                   <button 
                     onClick={handleLogout}
-                    className="flex items-center gap-3 w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    className="flex items-center gap-3 w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors font-medium"
                   >
                     <LogOut className="w-4 h-4" />
                     Logout
@@ -275,23 +344,23 @@ export default function DashboardLayout() {
         </header>
 
         {/* Mobile Search Bar */}
-        <div className="md:hidden p-4 bg-white/80 backdrop-blur-xl border-b border-gray-100 flex-shrink-0">
+        <div className="md:hidden p-4 bg-slate-800/95 backdrop-blur-xl border-b border-slate-700/50 flex-shrink-0">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} aria-hidden="true" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" size={18} aria-hidden="true" />
             <input
               type="text"
-              placeholder="Search books, authors..."
-              className="pl-10 pr-4 py-2.5 w-full border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200 outline-none"
+              placeholder="Search books and authors..."
+              className="pl-11 pr-4 py-3 w-full border-2 border-slate-600/50 rounded-2xl bg-slate-700/50 focus:bg-slate-700 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/20 transition-all duration-300 outline-none shadow-lg text-white placeholder-slate-400"
               aria-label="Search books and authors"
             />
           </div>
         </div>
 
-        {/* Main Content - This is where your Dashboard component will be rendered */}
-        <main className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100" role="main">
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800/50" role="main">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-            {/* Content from <Outlet /> or your Dashboard component goes here */}
-            <Outlet/>
+            {/* Content from <Outlet /> goes here */}
+            <Outlet />
           </div>
         </main>
       </div>
