@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LayoutDashboard, Settings, LogOut, Menu, X,BookOpen, Search, Bell, ChevronDown, UserCircle } from 'lucide-react';
+import { LayoutDashboard, Settings, Users,LogOut, Menu, X,BookOpen, Search, Bell, ChevronDown, UserCircle } from 'lucide-react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 interface NavigationItem {
@@ -60,8 +60,8 @@ export default function DashboardLayout() {
   const navigationItems: NavigationItem[] = [
     { path: "/", icon: LayoutDashboard, label: "Dashboard", color: "from-emerald-500 to-teal-600" },
     { path: "/books", icon: BookOpen, label: "Books", color: "from-violet-500 to-purple-600" },
-    // { path: "/authors", icon: Users, label: "Authors", color: "from-orange-500 to-red-500" },
-    // { path: "/settings", icon: Settings, label: "Settings", color: "from-slate-500 to-gray-600" },
+    { path: "/authors", icon: Users, label: "Authors", color: "from-orange-500 to-red-500" },
+    { path: "/setting", icon: Settings, label: "Setting", color: "from-slate-500 to-gray-600" },
   ];
 
   const isActiveRoute = (path: string): boolean => {
@@ -119,7 +119,7 @@ export default function DashboardLayout() {
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                  BookDash
+                  Book Management App
                 </h1>
                 <p className="text-xs text-slate-400 font-medium">Library Management</p>
               </div>
